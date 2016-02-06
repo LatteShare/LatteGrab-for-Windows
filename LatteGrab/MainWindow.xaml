@@ -1,0 +1,13 @@
+﻿<Window x:Class="LatteGrab.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LatteGrab"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:resx="clr-namespace:LatteGrab.Properties"
+        mc:Ignorable="d" Visibility="Hidden" WindowStyle="None">
+    <Grid>
+        <tb:TaskbarIcon ToolTipText="LatteGrab" />
+    </Grid>
+</Window>
