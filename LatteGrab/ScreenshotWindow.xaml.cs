@@ -76,15 +76,7 @@ namespace LatteGrab
             Graphics g = Graphics.FromImage(image);
             g.CopyFromScreen(ix, iy, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
 
-            var fn = Path.GetTempFileName();
-
-            image.Save(fn, ImageFormat.Png);
-
-            var url = LatteShareConnection.Instance.UploadFile(fn);
-
-            System.Windows.Forms.Clipboard.SetText(url);
-
-            System.Diagnostics.Debug.WriteLine(url);
+            Utilities.UploadImage(image);
         }
 
         public void SaveScreen(double x, double y, double width, double height)
@@ -104,15 +96,7 @@ namespace LatteGrab
                 NativeMethods.BitBlt(dc1, ix, iy, iw, ih, dc2, ix, iy, 13369376);
                 gr1.ReleaseHdc(dc1);
 
-                var fn = Path.GetTempFileName();
-
-                myImage.Save(fn, ImageFormat.Png);
-
-                var url = LatteShareConnection.Instance.UploadFile(fn);
-
-                System.Windows.Forms.Clipboard.SetText(url);
-
-                System.Diagnostics.Debug.WriteLine(url);
+                Utilities.UploadImage(myImage);
             }
             catch { }
         }

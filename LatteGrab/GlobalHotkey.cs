@@ -17,6 +17,8 @@ namespace LatteGrab
             this.key = (int)key;
             this.hWnd = form.Handle;
             id = this.GetHashCode();
+
+            System.Diagnostics.Debug.WriteLine(id);
         }
 
         public bool Register()

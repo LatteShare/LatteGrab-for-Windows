@@ -7,44 +7,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace LatteGrab
 {
     public partial class ScreenshotHandlerForm : Form
     {
+        public enum Type { FullScreen, Selection };
+
+        private Type t;
+
         private GlobalHotkey ghk;
 
-        public ScreenshotHandlerForm()
+        public ScreenshotHandlerForm(Type type)
         {
             InitializeComponent();
 
-            ghk = new GlobalHotkey(Constants.CTRL + Constants.SHIFT, Keys.D4, this);
+            t = type;
 
-            if (ghk.Register())
-                WriteLine("Hotkey registered.");
+            if (t == Type.FullScreen)
+                ghk = new GlobalHotkey(Constants.CTRL + Constants.SHIFT, Keys.D3, this);
+            else if (t == Type.Selection)
+                ghk = new GlobalHotkey(Constants.CTRL + Constants.SHIFT, Keys.D4, this);
             else
-                WriteLine("Hotkey failed to register");
-        }
-
-        private void HandleHotkey()
-        {
-            WriteLine("Hotkey pressed!");
-
-            ScreenshotWindow w = new ScreenshotWindow();
-
-            w.Show();
+                System.Diagnostics.Debug.WriteLine("Invalid type!");
+            
+            if (!ghk.Register())
+                MessageBox.Show("Failed to register an hotkey!");
         }
 
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == Constants.WM_HOTKEY_MSG_ID)
-                HandleHotkey();
-            base.WndProc(ref m);
-        }
+            {
+                if (t == Type.FullScreen)
+                    Utilities.UploadImage(FullScreenScreenshot.CaptureScreen());
+                else if (t == Type.Selection)
+                    new ScreenshotWindow().Show();
+            }
 
-        private void WriteLine(string text)
-        {
-            System.Diagnostics.Debug.WriteLine(text);
+            base.WndProc(ref m);
         }
     }
 }
