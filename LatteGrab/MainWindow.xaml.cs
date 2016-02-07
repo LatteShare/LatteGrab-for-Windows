@@ -29,6 +29,17 @@ namespace LatteGrab
             ScreenshotHandlerForm shf = new ScreenshotHandlerForm();
 
             shf.Show();
+
+            if (!LatteShareConnection.Instance.CheckAPIKey())
+            {
+                Login l = new Login();
+
+                l.Show();
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Successfully logged in.");
+            }
         }
     }
 }

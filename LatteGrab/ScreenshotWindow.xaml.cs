@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 
 namespace LatteGrab
@@ -74,12 +75,16 @@ namespace LatteGrab
             Bitmap image = new Bitmap(iw, ih, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(image);
             g.CopyFromScreen(ix, iy, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.DefaultExt = "png";
-            dlg.Filter = "Png Files|*.png";
-            DialogResult res = dlg.ShowDialog();
-            if (res == System.Windows.Forms.DialogResult.OK)
-                image.Save(dlg.FileName, ImageFormat.Png);
+
+            var fn = Path.GetTempFileName();
+
+            image.Save(fn, ImageFormat.Png);
+
+            var url = LatteShareConnection.Instance.UploadFile(fn);
+
+            System.Windows.Forms.Clipboard.SetText(url);
+
+            System.Diagnostics.Debug.WriteLine(url);
         }
 
         public void SaveScreen(double x, double y, double width, double height)
@@ -98,12 +103,16 @@ namespace LatteGrab
                 IntPtr dc2 = NativeMethods.GetWindowDC(NativeMethods.GetForegroundWindow());
                 NativeMethods.BitBlt(dc1, ix, iy, iw, ih, dc2, ix, iy, 13369376);
                 gr1.ReleaseHdc(dc1);
-                SaveFileDialog dlg = new SaveFileDialog();
-                dlg.DefaultExt = "png";
-                dlg.Filter = "Png Files|*.png";
-                DialogResult res = dlg.ShowDialog();
-                if (res == System.Windows.Forms.DialogResult.OK)
-                    myImage.Save(dlg.FileName, ImageFormat.Png);
+
+                var fn = Path.GetTempFileName();
+
+                myImage.Save(fn, ImageFormat.Png);
+
+                var url = LatteShareConnection.Instance.UploadFile(fn);
+
+                System.Windows.Forms.Clipboard.SetText(url);
+
+                System.Diagnostics.Debug.WriteLine(url);
             }
             catch { }
         }
