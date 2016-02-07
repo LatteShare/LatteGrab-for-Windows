@@ -8,6 +8,17 @@
         xmlns:resx="clr-namespace:LatteGrab.Properties"
         mc:Ignorable="d" Visibility="Hidden" WindowStyle="None">
     <Grid>
-        <tb:TaskbarIcon ToolTipText="LatteGrab" />
+        <tb:TaskbarIcon x:Name="taskbarIcon" 
+                        ToolTipText="LatteGrab"
+                        Icon="{x:Static resx:Resources.LatteGrab}">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="My Files" Click="MenuItem_MyFiles_Click" />
+                    <Separator />
+                    <MenuItem Header="Log Out" Click="MenuItem_LogOff_Click" />
+                    <MenuItem Header="Exit" Click="MenuItem_Exit_Click" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
     </Grid>
 </Window>

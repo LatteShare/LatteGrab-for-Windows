@@ -4,6 +4,9 @@ using RestSharp;
 
 namespace LatteGrab
 {
+    public delegate void UploadSuccessful(String url);
+    public delegate void UploadError(String error);
+
     class LatteShareConnection
     {
         private static LatteShareConnection instance = new LatteShareConnection();
@@ -20,6 +23,9 @@ namespace LatteGrab
 
         private String username = null;
         private String apiKey = null;
+
+        private UploadSuccessful uploadSuccessfulDelegate = null;
+        private UploadError uploadErrorDelegate = null;
 
         private LatteShareConnection()
         {
@@ -84,7 +90,15 @@ namespace LatteGrab
             IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
 
             if (response.Data.success)
+            {
+                if (uploadSuccessfulDelegate != null)
+                    uploadSuccessfulDelegate(response.Data.url);
+
                 return response.Data.url;
+            }
+
+            if (uploadErrorDelegate != null)
+                uploadErrorDelegate(response.Data.error);
 
             return null;
         }
@@ -95,6 +109,20 @@ namespace LatteGrab
             Properties.Settings.Default.APIKey = apiKey;
 
             Properties.Settings.Default.Save();
+        }
+
+        public void LogOff()
+        {
+            username = null;
+            apiKey = null;
+
+            Save();
+        }
+
+        public void SetDelegates(UploadSuccessful success, UploadError error)
+        {
+            uploadSuccessfulDelegate = success;
+            uploadErrorDelegate = error;
         }
     }
 }

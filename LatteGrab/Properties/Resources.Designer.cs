@@ -63,9 +63,9 @@ namespace LatteGrab.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        public static System.Drawing.Icon ScreenshotMetro {
+        public static System.Drawing.Icon LatteGrab {
             get {
-                object obj = ResourceManager.GetObject("ScreenshotMetro", resourceCulture);
+                object obj = ResourceManager.GetObject("LatteGrab", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
