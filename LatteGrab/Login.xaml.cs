@@ -40,5 +40,10 @@ namespace LatteGrab
                 MessageBox.Show("None of the fields field can be blank!");
             }
         }
+
+        private void signupButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://grabpaw.com/signup");
+        }
     }
 }

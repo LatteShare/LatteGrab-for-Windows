@@ -50,14 +50,14 @@ namespace LatteGrab
                 r.Height = Math.Abs(cury - y);
                 cnv.Children.Clear();
                 cnv.Children.Add(r);
-                Canvas.SetLeft(r, x);
-                Canvas.SetTop(r, y);
+                Canvas.SetLeft(r, Math.Min(x, curx));
+                Canvas.SetTop(r, Math.Min(y, cury));
                 if (e.LeftButton == MouseButtonState.Released)
                 {
                     cnv.Children.Clear();
-                    width = e.GetPosition(null).X - x;
-                    height = e.GetPosition(null).Y - y;
-                    this.CaptureScreen(x, y, width, height);
+                    width = Math.Abs(e.GetPosition(null).X - x);
+                    height = Math.Abs(e.GetPosition(null).Y - y);
+                    this.CaptureScreen(Math.Min(x, curx), Math.Min(y, cury), width, height);
                     this.x = this.y = 0;
                     this.isMouseDown = false;
                     this.Close();

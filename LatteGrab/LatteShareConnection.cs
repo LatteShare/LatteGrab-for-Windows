@@ -19,7 +19,7 @@ namespace LatteGrab
             }
         }
 
-        private RestClient client = new RestClient("https://latte.edr.io/api/v1");
+        private RestClient client = new RestClient("https://grabpaw.com/api/v1");
 
         private String username = null;
         private String apiKey = null;

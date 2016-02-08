@@ -40,7 +40,7 @@ namespace LatteGrab
 
         private void MenuItem_MyFiles_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://latte.edr.io/files/");
+            System.Diagnostics.Process.Start("https://grabpaw.com/files/");
         }
 
         private void MenuItem_LogOff_Click(object sender, RoutedEventArgs e)
