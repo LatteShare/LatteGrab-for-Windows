@@ -22,9 +22,18 @@ namespace LatteGrab
         public double height;
         public bool isMouseDown = false;
 
+        private static bool isCurrentlyShowing = false;
+
+        public static Boolean IsCurrentlyShowing()
+        {
+            return isCurrentlyShowing;
+        }
+
         public ScreenshotWindow()
         {
             InitializeComponent();
+
+            ScreenshotWindow.isCurrentlyShowing = true;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -60,6 +69,9 @@ namespace LatteGrab
                     this.CaptureScreen(Math.Min(x, curx), Math.Min(y, cury), width, height);
                     this.x = this.y = 0;
                     this.isMouseDown = false;
+
+                    ScreenshotWindow.isCurrentlyShowing = false;
+
                     this.Close();
                 }
             }

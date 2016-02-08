@@ -43,7 +43,10 @@ namespace LatteGrab
                 if (t == Type.FullScreen)
                     Utilities.UploadImage(FullScreenScreenshot.CaptureScreen());
                 else if (t == Type.Selection)
-                    new ScreenshotWindow().Show();
+                {
+                    if (!ScreenshotWindow.IsCurrentlyShowing())
+                        new ScreenshotWindow().Show();
+                }
             }
 
             base.WndProc(ref m);
