@@ -35,6 +35,8 @@ namespace LatteGrabCore
             {
                 settings = Settings.Deserialize(Settings.DefaultLocation());
             } catch (Exception e) {
+                System.Diagnostics.Debug.WriteLine("Can't load settings - creating new..." + e);
+
                 settings = new Settings();
             }
             

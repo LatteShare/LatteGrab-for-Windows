@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LatteGrab"
         mc:Ignorable="d"
-        Title="Login" Height="160" Width="250" ResizeMode="NoResize">
+        Title="Login" Height="200" Width="375" ResizeMode="NoResize">
     <Grid>
-        <Label x:Name="label" Content="Username" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label" Content="Username" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label1" Content="Password" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="usernameTextBox" HorizontalAlignment="Left" Height="23" Margin="86,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" ToolTip="Username"/>
-        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="86,55,0,0" VerticalAlignment="Top" Width="148" ToolTip="Password" Height="23"/>
-        <Button x:Name="loginButton" Content="Login" HorizontalAlignment="Left" Margin="159,93,0,0" VerticalAlignment="Top" Width="75" Click="loginButton_Click" IsDefault="True"/>
-        <Button x:Name="button" Content="Signup" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="75" Click="signupButton_Click"/>
+        <TextBox x:Name="usernameTextBox" HorizontalAlignment="Left" Height="23" Margin="100,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="249" ToolTip="Username"/>
+        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="100,55,0,0" VerticalAlignment="Top" Width="249" ToolTip="Password" Height="23"/>
+        <Button x:Name="loginButton" Content="Login" HorizontalAlignment="Left" Margin="274,130,0,0" VerticalAlignment="Top" Width="75" Click="loginButton_Click" IsDefault="True"/>
+        <Button x:Name="button" Content="Signup" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Width="75" Click="signupButton_Click"/>
+        <Label x:Name="label1_Copy" Content="Server" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="usernameTextBox_Copy" HorizontalAlignment="Left" Height="23" Margin="100,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="249" ToolTip="Username" Text="https://grabpaw.com/api/v1"/>
     </Grid>
 </Window>

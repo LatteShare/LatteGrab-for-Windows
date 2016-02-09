@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
+//  Based on http://www.dreamincode.net/forums/topic/180436-global-hotkeys/
+
 namespace LatteGrab
 {
     public class GlobalHotkey

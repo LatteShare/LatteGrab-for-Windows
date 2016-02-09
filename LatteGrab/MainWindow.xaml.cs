@@ -4,9 +4,6 @@ using LatteGrabCore;
 
 namespace LatteGrab
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -22,6 +19,8 @@ namespace LatteGrab
                 System.Diagnostics.Debug.WriteLine("Successfully logged in.");
 
             LatteShareConnection.Instance.SetDelegates(new UploadSuccessful(ShowUploadedBalloon), new UploadError(ShowErrorBalloon));
+
+            openAtLoginMenuItem.IsChecked = Utilities.IsRunningAtStartup();
         }
 
         private void ShowUploadedBalloon(string url)
@@ -38,6 +37,13 @@ namespace LatteGrab
             string text = error;
             
             taskbarIcon.ShowBalloonTip(title, text, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Error);
+        }
+
+        private void MenuItem_OpenAtLogin_Click(object sender, RoutedEventArgs e)
+        {
+            Utilities.RunAtStartup(!Utilities.IsRunningAtStartup());
+
+            openAtLoginMenuItem.IsChecked = Utilities.IsRunningAtStartup();
         }
 
         private void MenuItem_MyFiles_Click(object sender, RoutedEventArgs e)

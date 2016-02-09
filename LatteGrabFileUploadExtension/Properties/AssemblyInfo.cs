@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LatteGrabFileUploadExtension")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Explorer Shell Extension for LatteGrab.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Eduardo Almeida (edr.io)")]
 [assembly: AssemblyProduct("LatteGrabFileUploadExtension")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © Eduardo Almeida  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
