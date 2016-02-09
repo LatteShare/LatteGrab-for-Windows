@@ -67,7 +67,7 @@ namespace LatteGrabCore
 
         public static void Serialize(string file, Settings c)
         {
-            XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(c.GetType());
+            XmlSerializer xs = new XmlSerializer(c.GetType());
             StreamWriter writer = File.CreateText(file);
 
             xs.Serialize(writer, c);
@@ -77,7 +77,7 @@ namespace LatteGrabCore
 
         public static Settings Deserialize(string file)
         {
-            XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(typeof(Settings));
+            XmlSerializer xs = new XmlSerializer(typeof(Settings));
             StreamReader reader = File.OpenText(file);
             Settings c = (Settings)xs.Deserialize(reader);
 

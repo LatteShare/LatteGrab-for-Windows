@@ -5,15 +5,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Windows.Forms;
+
+//  Based on http://www.codeproject.com/Articles/91487/Screen-Capture-in-WPF-WinForms-Application?msg=4737859
 
 namespace LatteGrab
 {
-    /// <summary>
-    /// Interaction logic for ScreenshotWindow.xaml
-    /// </summary>
     public partial class ScreenshotWindow : Window
     {
         public double x;
@@ -39,6 +35,7 @@ namespace LatteGrab
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             isMouseDown = true;
+
             x = e.GetPosition(null).X;
             y = e.GetPosition(null).Y;
         }
@@ -52,20 +49,26 @@ namespace LatteGrab
 
                 System.Windows.Shapes.Rectangle r = new System.Windows.Shapes.Rectangle();
                 SolidColorBrush brush = new SolidColorBrush(Colors.White);
+
                 r.Stroke = brush;
                 r.Fill = brush;
                 r.StrokeThickness = 1;
                 r.Width = Math.Abs(curx - x);
                 r.Height = Math.Abs(cury - y);
+
                 cnv.Children.Clear();
                 cnv.Children.Add(r);
+
                 Canvas.SetLeft(r, Math.Min(x, curx));
                 Canvas.SetTop(r, Math.Min(y, cury));
+
                 if (e.LeftButton == MouseButtonState.Released)
                 {
                     cnv.Children.Clear();
+
                     width = Math.Abs(e.GetPosition(null).X - x);
                     height = Math.Abs(e.GetPosition(null).Y - y);
+
                     this.CaptureScreen(Math.Min(x, curx), Math.Min(y, cury), width, height);
                     this.x = this.y = 0;
                     this.isMouseDown = false;
@@ -80,12 +83,15 @@ namespace LatteGrab
         public void CaptureScreen(double x, double y, double width, double height)
         {
             int ix, iy, iw, ih;
+
             ix = Convert.ToInt32(x);
             iy = Convert.ToInt32(y);
             iw = Convert.ToInt32(width);
             ih = Convert.ToInt32(height);
+
             Bitmap image = new Bitmap(iw, ih, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(image);
+
             g.CopyFromScreen(ix, iy, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
 
             Utilities.UploadImage(image);
@@ -94,18 +100,23 @@ namespace LatteGrab
         public void SaveScreen(double x, double y, double width, double height)
         {
             int ix, iy, iw, ih;
+
             ix = Convert.ToInt32(x);
             iy = Convert.ToInt32(y);
             iw = Convert.ToInt32(width);
             ih = Convert.ToInt32(height);
+
             try
             {
                 Bitmap myImage = new Bitmap(iw, ih);
 
                 Graphics gr1 = Graphics.FromImage(myImage);
+
                 IntPtr dc1 = gr1.GetHdc();
                 IntPtr dc2 = NativeMethods.GetWindowDC(NativeMethods.GetForegroundWindow());
+
                 NativeMethods.BitBlt(dc1, ix, iy, iw, ih, dc2, ix, iy, 13369376);
+
                 gr1.ReleaseHdc(dc1);
 
                 Utilities.UploadImage(myImage);
