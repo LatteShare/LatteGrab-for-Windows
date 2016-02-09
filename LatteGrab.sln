@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatteGrab", "LatteGrab\LatteGrab.csproj", "{8DFA6B67-6786-45D5-AADE-C09D6F1B54BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatteGrabCore", "LatteGrabCore\LatteGrabCore.csproj", "{642C14D6-B795-484C-9DBB-C517700EF3BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatteGrabFileUploadExtension", "LatteGrabFileUploadExtension\LatteGrabFileUploadExtension.csproj", "{28CFF898-F6FC-4410-B093-254555187FCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8DFA6B67-6786-45D5-AADE-C09D6F1B54BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DFA6B67-6786-45D5-AADE-C09D6F1B54BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DFA6B67-6786-45D5-AADE-C09D6F1B54BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{642C14D6-B795-484C-9DBB-C517700EF3BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642C14D6-B795-484C-9DBB-C517700EF3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642C14D6-B795-484C-9DBB-C517700EF3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642C14D6-B795-484C-9DBB-C517700EF3BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28CFF898-F6FC-4410-B093-254555187FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28CFF898-F6FC-4410-B093-254555187FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28CFF898-F6FC-4410-B093-254555187FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28CFF898-F6FC-4410-B093-254555187FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

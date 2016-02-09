@@ -2,12 +2,12 @@
 
 using RestSharp;
 
-namespace LatteGrab
+namespace LatteGrabCore
 {
     public delegate void UploadSuccessful(String url);
     public delegate void UploadError(String error);
 
-    class LatteShareConnection
+    public class LatteShareConnection
     {
         private static LatteShareConnection instance = new LatteShareConnection();
 
@@ -27,13 +27,23 @@ namespace LatteGrab
         private UploadSuccessful uploadSuccessfulDelegate = null;
         private UploadError uploadErrorDelegate = null;
 
-        private LatteShareConnection()
-        {
-            if (Properties.Settings.Default.Username != null)
-                username = Properties.Settings.Default.Username;
+        private Settings settings = null;
 
-            if (Properties.Settings.Default.APIKey != null)
-                apiKey = Properties.Settings.Default.APIKey;
+        private LatteShareConnection()
+        {   
+            try
+            {
+                settings = Settings.Deserialize(Settings.DefaultLocation());
+            } catch (Exception e) {
+                settings = new Settings();
+            }
+            
+
+            if (settings.Username != null)
+                username = settings.Username;
+
+            if (settings.APIKey!= null)
+                apiKey = settings.APIKey;
         }
 
         public bool RequestAPIKey(String username, String password)
@@ -105,10 +115,10 @@ namespace LatteGrab
 
         private void Save()
         {
-            Properties.Settings.Default.Username = username;
-            Properties.Settings.Default.APIKey = apiKey;
+            settings.Username = username;
+            settings.APIKey = apiKey;
 
-            Properties.Settings.Default.Save();
+            Settings.Serialize(Settings.DefaultLocation(), settings);
         }
 
         public void LogOff()

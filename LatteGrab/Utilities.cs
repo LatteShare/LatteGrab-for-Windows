@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 
+using LatteGrabCore;
+
 namespace LatteGrab
 {
     class Utilities

@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 
+using LatteGrabCore;
+
 namespace LatteGrab
 {
     /// <summary>
