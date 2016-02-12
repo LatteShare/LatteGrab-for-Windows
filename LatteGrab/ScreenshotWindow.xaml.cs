@@ -30,6 +30,8 @@ namespace LatteGrab
             InitializeComponent();
 
             ScreenshotWindow.isCurrentlyShowing = true;
+
+            this.Cursor = Cursors.Cross;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -75,6 +77,8 @@ namespace LatteGrab
 
                     ScreenshotWindow.isCurrentlyShowing = false;
 
+                    this.Cursor = Cursors.Arrow;
+
                     this.Close();
                 }
             }
@@ -89,12 +93,18 @@ namespace LatteGrab
             iw = Convert.ToInt32(width);
             ih = Convert.ToInt32(height);
 
-            Bitmap image = new Bitmap(iw, ih, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(image);
+            try
+            {
+                Bitmap image = new Bitmap(iw, ih, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                Graphics g = Graphics.FromImage(image);
 
-            g.CopyFromScreen(ix, iy, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
+                g.CopyFromScreen(ix - 7, iy - 7, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
 
-            Utilities.UploadImage(image);
+                Utilities.UploadImage(image);
+            }
+            catch {
+                this.Close();
+            }
         }
 
         public void SaveScreen(double x, double y, double width, double height)
