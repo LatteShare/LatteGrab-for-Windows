@@ -19,8 +19,6 @@ namespace LatteGrab
                 System.Diagnostics.Debug.WriteLine("Successfully logged in.");
 
             LatteShareConnection.Instance.SetDelegates(new UploadSuccessful(ShowUploadedBalloon), new UploadError(ShowErrorBalloon));
-
-            openAtLoginMenuItem.IsChecked = Utilities.IsRunningAtStartup();
         }
 
         private void ShowUploadedBalloon(string url)
@@ -39,23 +37,14 @@ namespace LatteGrab
             taskbarIcon.ShowBalloonTip(title, text, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Error);
         }
 
-        private void MenuItem_OpenAtLogin_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_Settings_Click(object sender, RoutedEventArgs e)
         {
-            Utilities.RunAtStartup(!Utilities.IsRunningAtStartup());
-
-            openAtLoginMenuItem.IsChecked = Utilities.IsRunningAtStartup();
+            (new Settings()).Show();
         }
 
         private void MenuItem_MyFiles_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://grabpaw.com/files/");
-        }
-
-        private void MenuItem_LogOff_Click(object sender, RoutedEventArgs e)
-        {
-            LatteShareConnection.Instance.LogOff();
-
-            new Login().Show();
         }
 
         private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)

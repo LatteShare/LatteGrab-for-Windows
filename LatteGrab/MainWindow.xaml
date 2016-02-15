@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LatteGrab"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:resx="clr-namespace:LatteGrab.Properties"
-        mc:Ignorable="d" Visibility="Hidden" WindowStyle="None">
+        mc:Ignorable="d" Visibility="Hidden" WindowStyle="None" ShowInTaskbar="False">
     <Grid>
         <tb:TaskbarIcon x:Name="taskbarIcon" 
                         ToolTipText="LatteGrab"
@@ -15,8 +15,8 @@
                 <ContextMenu>
                     <MenuItem Header="My Files" Click="MenuItem_MyFiles_Click" />
                     <Separator />
-                    <MenuItem Header="Open at Login" Click="MenuItem_OpenAtLogin_Click" Name="openAtLoginMenuItem" />
-                    <MenuItem Header="Log Out" Click="MenuItem_LogOff_Click" />
+                    <!--<MenuItem Header="Open at Login" Click="MenuItem_OpenAtLogin_Click" Name="openAtLoginMenuItem" />-->
+                    <MenuItem Header="Settings" Click="MenuItem_Settings_Click" />
                     <MenuItem Header="Exit" Click="MenuItem_Exit_Click" />
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>

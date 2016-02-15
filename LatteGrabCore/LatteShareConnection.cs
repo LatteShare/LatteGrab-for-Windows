@@ -7,6 +7,14 @@ namespace LatteGrabCore
     public delegate void UploadSuccessful(String url);
     public delegate void UploadError(String error);
 
+    public struct LatteShareUserInformation
+    {
+        public String username;
+        public String group;
+        public Int64 quota;
+        public Int64 usedDiskSpace;
+    }
+
     public class LatteShareConnection
     {
         private static LatteShareConnection instance = new LatteShareConnection();
@@ -19,7 +27,43 @@ namespace LatteGrabCore
             }
         }
 
-        private RestClient client = new RestClient("https://grabpaw.com/api/v1");
+        private RestClient client = null;
+
+        private static String ServerConnectionAppendString
+        {
+            get
+            {
+                return "/api/" + Version;
+            }
+        }
+
+        private String currentServer = null;
+
+        public String CurrentServer
+        {
+            get
+            {
+                if (currentServer == null)
+                    return "https://grabpaw.com";
+
+                return currentServer;
+            }
+
+            set
+            {
+                currentServer = value;
+
+                client = new RestClient(currentServer + ServerConnectionAppendString);
+            }
+        }
+
+        public static String Version
+        {
+            get
+            {
+                return "v1";
+            }
+        }
 
         private String username = null;
         private String apiKey = null;
@@ -39,13 +83,17 @@ namespace LatteGrabCore
 
                 settings = new Settings();
             }
-            
+
+            client = new RestClient(CurrentServer + ServerConnectionAppendString);
 
             if (settings.Username != null)
                 username = settings.Username;
 
             if (settings.APIKey!= null)
                 apiKey = settings.APIKey;
+
+            if (settings.Server != null)
+                CurrentServer = settings.Server;
         }
 
         public bool RequestAPIKey(String username, String password)
@@ -88,6 +136,29 @@ namespace LatteGrabCore
             return (response.Data.success);
         }
 
+        public LatteShareUserInformation? GetUserInformation()
+        {
+            var request = new RestRequest("/user", Method.GET);
+
+            request.AddParameter("apiKey", apiKey);
+
+            IRestResponse<LatteShareUserInformationResponse> response = client.Execute<LatteShareUserInformationResponse>(request);
+
+            if (response.Data.success)
+            {
+                var userInfo = new LatteShareUserInformation();
+
+                userInfo.username = (String) response.Data.data["username"];
+                userInfo.group = (String) response.Data.data["group"];
+                userInfo.quota = (long) response.Data.data["quota"];
+                userInfo.usedDiskSpace = (long) response.Data.data["usedDiskSpace"];
+
+                return userInfo;
+            }
+
+            return null;
+        }
+
         public String UploadFile(String path)
         {
             var request = new RestRequest("/upload", Method.POST);
@@ -119,6 +190,7 @@ namespace LatteGrabCore
         {
             settings.Username = username;
             settings.APIKey = apiKey;
+            settings.Server = CurrentServer;
 
             Settings.Serialize(Settings.DefaultLocation(), settings);
         }
