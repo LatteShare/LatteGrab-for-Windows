@@ -27,10 +27,7 @@ namespace LatteGrabCore
             }
         }
 
-        public static String DefaultServer = "https://grabpaw.com";
-        public static String Version = "v1";
-
-        private RestClient client = new RestClient(DefaultServer + ServerConnectionAppendString);
+        private RestClient client = null;
 
         private static String ServerConnectionAppendString
         {
@@ -40,12 +37,15 @@ namespace LatteGrabCore
             }
         }
 
-        private String currentServer = DefaultServer;
+        private String currentServer = null;
 
         public String CurrentServer
         {
             get
             {
+                if (currentServer == null)
+                    return "https://grabpaw.com";
+
                 return currentServer;
             }
 
@@ -54,6 +54,14 @@ namespace LatteGrabCore
                 currentServer = value;
 
                 client = new RestClient(currentServer + ServerConnectionAppendString);
+            }
+        }
+
+        public static String Version
+        {
+            get
+            {
+                return "v1";
             }
         }
 
@@ -75,13 +83,17 @@ namespace LatteGrabCore
 
                 settings = new Settings();
             }
-            
+
+            client = new RestClient(CurrentServer + ServerConnectionAppendString);
 
             if (settings.Username != null)
                 username = settings.Username;
 
             if (settings.APIKey!= null)
                 apiKey = settings.APIKey;
+
+            if (settings.Server != null)
+                CurrentServer = settings.Server;
         }
 
         public bool RequestAPIKey(String username, String password)
@@ -178,6 +190,7 @@ namespace LatteGrabCore
         {
             settings.Username = username;
             settings.APIKey = apiKey;
+            settings.Server = CurrentServer;
 
             Settings.Serialize(Settings.DefaultLocation(), settings);
         }

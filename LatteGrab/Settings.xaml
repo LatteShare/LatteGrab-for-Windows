@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LatteGrab"
         mc:Ignorable="d"
-        Title="Settings" Height="250" Width="300" ResizeMode="CanMinimize">
+        Title="Settings" Height="250" Width="305" ResizeMode="CanMinimize">
     <Grid>
         <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged">
-            <TabItem Header="General" x:Name="tab_General" Height="24" VerticalAlignment="Top">
+            <TabItem Header="General" x:Name="tab_General">
                 <Grid Background="#FFE5E5E5">
                     <CheckBox x:Name="openAtLoginCheckBox" Content="Open at Login" HorizontalAlignment="Left" Margin="15,15,0,0" VerticalAlignment="Top" Checked="openAtLoginCheckBox_ChangedState" Unchecked="openAtLoginCheckBox_ChangedState"/>
                     <Button x:Name="button1" Content="Log Out" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="266" Click="button1_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="latteshare server" x:Name="tab_latteshare" Height="28" VerticalAlignment="Bottom">
+            <TabItem Header="latteshare server" x:Name="tab_latteshare">
                 <Grid Background="#FFE5E5E5">
                     <Label x:Name="label" Content="Username:" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label1" Content="Group:" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top"/>
@@ -38,6 +38,5 @@
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>
