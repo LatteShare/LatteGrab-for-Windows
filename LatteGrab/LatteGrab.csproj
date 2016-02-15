@@ -158,6 +158,9 @@
     <Compile Include="ScreenshotWindow.xaml.cs">
       <DependentUpon>ScreenshotWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
     <Page Include="Login.xaml">
       <SubType>Designer</SubType>
@@ -176,6 +179,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ScreenshotWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

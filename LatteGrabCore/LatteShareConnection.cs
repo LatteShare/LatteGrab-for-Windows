@@ -7,6 +7,14 @@ namespace LatteGrabCore
     public delegate void UploadSuccessful(String url);
     public delegate void UploadError(String error);
 
+    public struct LatteShareUserInformation
+    {
+        public String username;
+        public String group;
+        public Int64 quota;
+        public Int64 usedDiskSpace;
+    }
+
     public class LatteShareConnection
     {
         private static LatteShareConnection instance = new LatteShareConnection();
@@ -19,7 +27,35 @@ namespace LatteGrabCore
             }
         }
 
-        private RestClient client = new RestClient("https://grabpaw.com/api/v1");
+        public static String DefaultServer = "https://grabpaw.com";
+        public static String Version = "v1";
+
+        private RestClient client = new RestClient(DefaultServer + ServerConnectionAppendString);
+
+        private static String ServerConnectionAppendString
+        {
+            get
+            {
+                return "/api/" + Version;
+            }
+        }
+
+        private String currentServer = DefaultServer;
+
+        public String CurrentServer
+        {
+            get
+            {
+                return currentServer;
+            }
+
+            set
+            {
+                currentServer = value;
+
+                client = new RestClient(currentServer + ServerConnectionAppendString);
+            }
+        }
 
         private String username = null;
         private String apiKey = null;
@@ -86,6 +122,29 @@ namespace LatteGrabCore
             IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
 
             return (response.Data.success);
+        }
+
+        public LatteShareUserInformation? GetUserInformation()
+        {
+            var request = new RestRequest("/user", Method.GET);
+
+            request.AddParameter("apiKey", apiKey);
+
+            IRestResponse<LatteShareUserInformationResponse> response = client.Execute<LatteShareUserInformationResponse>(request);
+
+            if (response.Data.success)
+            {
+                var userInfo = new LatteShareUserInformation();
+
+                userInfo.username = (String) response.Data.data["username"];
+                userInfo.group = (String) response.Data.data["group"];
+                userInfo.quota = (long) response.Data.data["quota"];
+                userInfo.usedDiskSpace = (long) response.Data.data["usedDiskSpace"];
+
+                return userInfo;
+            }
+
+            return null;
         }
 
         public String UploadFile(String path)
