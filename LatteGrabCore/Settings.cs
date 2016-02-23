@@ -51,7 +51,7 @@ namespace LatteGrabCore
 
         public Settings()
         {
-            server = "https://grabpaw.com/api/v1/";
+            server = "https://grabpaw.com";
             username = null;
             apiKey = null;
         }

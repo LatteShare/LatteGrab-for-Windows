@@ -98,92 +98,120 @@ namespace LatteGrabCore
 
         public bool RequestAPIKey(String username, String password)
         {
-            var request = new RestRequest("/key", Method.POST);
-
-            request.AddParameter("username", username);
-            request.AddParameter("password", password);
-
-            IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
-
-            if (response.Data.success)
+            try
             {
-                this.username = username;
-                this.apiKey = response.Data.key;
+                var request = new RestRequest("/key", Method.POST);
 
-                System.Diagnostics.Debug.WriteLine(username);
-                System.Diagnostics.Debug.WriteLine(apiKey);
+                request.AddParameter("username", username);
+                request.AddParameter("password", password);
 
-                Save();
+                IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
 
-                return true;
+                if (response.Data.success)
+                {
+                    this.username = username;
+                    this.apiKey = response.Data.key;
+
+                    System.Diagnostics.Debug.WriteLine(username);
+                    System.Diagnostics.Debug.WriteLine(apiKey);
+
+                    Save();
+
+                    return true;
+                }
+
+                return false;
             }
-
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         public bool CheckAPIKey()
         {
-            if (username == "" || apiKey == "")
+            try
+            {
+                if (username == "" || apiKey == "")
+                    return false;
+
+                var request = new RestRequest("/key", Method.GET);
+
+                request.AddParameter("username", username);
+                request.AddParameter("apiKey", apiKey);
+
+                IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
+
+                return (response.Data.success);
+            }
+            catch
+            {
                 return false;
-
-            var request = new RestRequest("/key", Method.GET);
-
-            request.AddParameter("username", username);
-            request.AddParameter("apiKey", apiKey);
-
-            IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
-
-            return (response.Data.success);
+            }
         }
 
         public LatteShareUserInformation? GetUserInformation()
         {
-            var request = new RestRequest("/user", Method.GET);
-
-            request.AddParameter("apiKey", apiKey);
-
-            IRestResponse<LatteShareUserInformationResponse> response = client.Execute<LatteShareUserInformationResponse>(request);
-
-            if (response.Data.success)
+            try
             {
-                var userInfo = new LatteShareUserInformation();
+                var request = new RestRequest("/user", Method.GET);
 
-                userInfo.username = (String) response.Data.data["username"];
-                userInfo.group = (String) response.Data.data["group"];
-                userInfo.quota = (long) response.Data.data["quota"];
-                userInfo.usedDiskSpace = (long) response.Data.data["usedDiskSpace"];
+                request.AddParameter("apiKey", apiKey);
 
-                return userInfo;
+                IRestResponse<LatteShareUserInformationResponse> response = client.Execute<LatteShareUserInformationResponse>(request);
+
+                if (response.Data.success)
+                {
+                    var userInfo = new LatteShareUserInformation();
+
+                    userInfo.username = (String)response.Data.data["username"];
+                    userInfo.group = (String)response.Data.data["group"];
+                    userInfo.quota = (long)response.Data.data["quota"];
+                    userInfo.usedDiskSpace = (long)response.Data.data["usedDiskSpace"];
+
+                    return userInfo;
+                }
+
+                return null;
             }
-
-            return null;
+            catch
+            {
+                return null;
+            }
         }
 
         public String UploadFile(String path)
         {
-            var request = new RestRequest("/upload", Method.POST);
-
-            request.AddParameter("username", username);
-            request.AddParameter("apiKey", apiKey);
-
-            request.AddFile("upload", path);
-
-            request.AddHeader("Content-Type", "multipart/form-data");
-
-            IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
-
-            if (response.Data.success)
+            try
             {
-                if (uploadSuccessfulDelegate != null)
-                    uploadSuccessfulDelegate(response.Data.url);
+                var request = new RestRequest("/upload", Method.POST);
 
-                return response.Data.url;
+                request.AddParameter("username", username);
+                request.AddParameter("apiKey", apiKey);
+
+                request.AddFile("upload", path);
+
+                request.AddHeader("Content-Type", "multipart/form-data");
+
+                IRestResponse<LatteShareResponse> response = client.Execute<LatteShareResponse>(request);
+
+                if (response.Data.success)
+                {
+                    if (uploadSuccessfulDelegate != null)
+                        uploadSuccessfulDelegate(response.Data.url);
+
+                    return response.Data.url;
+                }
+
+                if (uploadErrorDelegate != null)
+                    uploadErrorDelegate(response.Data.error);
+
+                return null;
+            } 
+            catch
+            {
+                return null;
             }
-
-            if (uploadErrorDelegate != null)
-                uploadErrorDelegate(response.Data.error);
-
-            return null;
         }
 
         private void Save()

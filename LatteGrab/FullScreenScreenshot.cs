@@ -2,11 +2,32 @@
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows;
 
 namespace LatteGrab
 {
     class FullScreenScreenshot
     {
+        public static void CaptureAllScreensToFile(String filename, ImageFormat format)
+        {
+            //  Based on http://stackoverflow.com/questions/15847637/take-screenshot-from-multiple-desktops-of-all-visible-applications-and-forms
+
+            int screenLeft = (int)SystemParameters.VirtualScreenLeft;
+            int screenTop = (int)SystemParameters.VirtualScreenTop;
+            int screenWidth = (int)SystemParameters.VirtualScreenWidth;
+            int screenHeight = (int)SystemParameters.VirtualScreenHeight;
+
+            using (Bitmap bmp = new Bitmap(screenWidth, screenHeight))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.CopyFromScreen(screenLeft, screenTop, 0, 0, bmp.Size);
+                }
+
+                bmp.Save(filename, format);
+            }
+        }
+
         public static Image CaptureScreen()
         {
             return CaptureWindow(User32.GetDesktopWindow());
@@ -31,13 +52,13 @@ namespace LatteGrab
 
             return img;
         }
-        
+
         public static void CaptureWindowToFile(IntPtr handle, string filename, ImageFormat format)
         {
             Image img = CaptureWindow(handle);
             img.Save(filename, format);
         }
-        
+
         public static void CaptureScreenToFile(string filename, ImageFormat format)
         {
             Image img = CaptureScreen();

@@ -10,11 +10,24 @@ namespace LatteGrab
 {
     class Utilities
     {
-        public static void UploadImage(Bitmap img)
+        public static void UploadBitmap(Bitmap img)
         {
             var fn = Path.GetTempFileName();
 
             img.Save(fn, ImageFormat.Png);
+
+            var url = LatteShareConnection.Instance.UploadFile(fn);
+
+            System.Windows.Forms.Clipboard.SetText(url);
+
+            System.Diagnostics.Debug.WriteLine(url);
+        }
+
+        public static void UploadAllScreens()
+        {
+            var fn = Path.GetTempFileName();
+
+            FullScreenScreenshot.CaptureAllScreensToFile(fn, ImageFormat.Png);
 
             var url = LatteShareConnection.Instance.UploadFile(fn);
 

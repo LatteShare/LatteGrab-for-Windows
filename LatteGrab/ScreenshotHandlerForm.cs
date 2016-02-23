@@ -32,7 +32,7 @@ namespace LatteGrab
             if (m.Msg == Constants.WM_HOTKEY_MSG_ID)
             {
                 if (t == Type.FullScreen)
-                    Utilities.UploadImage(FullScreenScreenshot.CaptureScreen());
+                    Utilities.UploadAllScreens();
                 else if (t == Type.Selection)
                 {
                     if (!ScreenshotWindow.IsCurrentlyShowing())
