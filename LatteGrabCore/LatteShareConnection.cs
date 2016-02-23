@@ -189,7 +189,7 @@ namespace LatteGrabCore
                 request.AddParameter("username", username);
                 request.AddParameter("apiKey", apiKey);
 
-                request.AddFile("upload", path);
+                request.AddFile("upload", path, System.Web.MimeMapping.GetMimeMapping(path));
 
                 request.AddHeader("Content-Type", "multipart/form-data");
 
