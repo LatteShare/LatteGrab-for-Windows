@@ -54,7 +54,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>79A5FBB058425EE27EBC73D3763FC5D3E3B2815F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C346D9767E33C0164F845DD4E27AE3FBCE623DF7</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>LatteGrab_TemporaryKey.pfx</ManifestKeyFile>
@@ -63,7 +63,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -78,7 +78,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>LatteGrab.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BittenApps.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -208,7 +208,9 @@
     <EmbeddedResource Include="ScreenshotHandlerForm.resx">
       <DependentUpon>ScreenshotHandlerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="BittenApps.snk" />
     <None Include="LatteGrab.snk" />
+    <None Include="LatteGrab_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>

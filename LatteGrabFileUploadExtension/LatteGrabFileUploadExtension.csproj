@@ -33,7 +33,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>LatteGrab.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BittenApps.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +92,7 @@
     <Compile Include="UploadFileExtension.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BittenApps.snk" />
     <None Include="LatteGrab.snk" />
     <None Include="packages.config" />
   </ItemGroup>

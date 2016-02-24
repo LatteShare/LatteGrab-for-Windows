@@ -102,7 +102,10 @@ namespace LatteGrab
 
                 Utilities.UploadImage(image);
             }
-            catch {
+            catch
+            {
+                isCurrentlyShowing = false;
+
                 this.Close();
             }
         }
@@ -131,7 +134,10 @@ namespace LatteGrab
 
                 Utilities.UploadImage(myImage);
             }
-            catch { }
+            catch
+            {
+                isCurrentlyShowing = false;
+            }
         }
 
         internal class NativeMethods
