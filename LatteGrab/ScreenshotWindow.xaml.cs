@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 //  Based on http://www.codeproject.com/Articles/91487/Screen-Capture-in-WPF-WinForms-Application?msg=4737859
 
@@ -42,6 +43,23 @@ namespace LatteGrab
             y = e.GetPosition(null).Y;
         }
 
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (x == e.GetPosition(null).X && y == e.GetPosition(null).Y)
+            {
+                cnv.Children.Clear();
+
+                this.x = this.y = 0;
+                this.isMouseDown = false;
+
+                ScreenshotWindow.isCurrentlyShowing = false;
+
+                this.Cursor = Cursors.Arrow;
+
+                this.Close();
+            }
+        }
+
         private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (this.isMouseDown)
@@ -72,6 +90,7 @@ namespace LatteGrab
                     height = Math.Abs(e.GetPosition(null).Y - y);
 
                     this.CaptureScreen(Math.Min(x, curx), Math.Min(y, cury), width, height);
+
                     this.x = this.y = 0;
                     this.isMouseDown = false;
 
@@ -100,7 +119,7 @@ namespace LatteGrab
 
                 g.CopyFromScreen(ix - 7, iy - 7, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
 
-                Utilities.UploadImage(image);
+                Task.Run(() => Utilities.UploadImage(image));
             }
             catch
             {

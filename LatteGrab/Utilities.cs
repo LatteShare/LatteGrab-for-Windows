@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using Microsoft.Win32;
 
 using LatteGrabCore;
+using System.Threading;
 
 namespace LatteGrab
 {
@@ -44,9 +45,11 @@ namespace LatteGrab
 
             var url = LatteShareConnection.Instance.UploadFile(fn);
 
-            System.Windows.Forms.Clipboard.SetText(url);
+            Thread thread = new Thread(() => System.Windows.Forms.Clipboard.SetText(url));
 
-            System.Diagnostics.Debug.WriteLine(url);
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
         }
 
         public static void RunAtStartup(bool shouldRun)

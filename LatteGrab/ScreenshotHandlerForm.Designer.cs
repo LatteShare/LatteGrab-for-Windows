@@ -32,9 +32,10 @@
             // 
             // ScreenshotHandlerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(568, 502);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "ScreenshotHandlerForm";
             this.ShowInTaskbar = false;
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;

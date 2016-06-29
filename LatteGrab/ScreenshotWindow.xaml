@@ -7,7 +7,8 @@
         Opacity=".1" 
         AllowsTransparency="True" 
         Background="Black"
-        PreviewMouseDown="Window_MouseDown" 
+        PreviewMouseDown="Window_MouseDown"
+        PreviewMouseUp="Window_MouseUp"
         PreviewMouseMove="Window_MouseMove" ShowInTaskbar="False">
     <Canvas x:Name="cnv" />
 </Window>

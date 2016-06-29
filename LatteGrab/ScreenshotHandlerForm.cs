@@ -9,6 +9,7 @@ namespace LatteGrab
         private Type t;
 
         private GlobalHotkey ghk;
+        private GlobalHotkey escGhk;
 
         public ScreenshotHandlerForm(Type type)
         {
@@ -22,9 +23,13 @@ namespace LatteGrab
                 ghk = new GlobalHotkey(Constants.CTRL + Constants.SHIFT, Keys.D4, this);
             else
                 System.Diagnostics.Debug.WriteLine("Invalid type!");
+
+            escGhk = new GlobalHotkey(Constants.NOMOD, Keys.Escape, this);
             
             if (!ghk.Register())
                 MessageBox.Show("Failed to register an hotkey!");
+
+            this.Visible = false;
         }
 
         protected override void WndProc(ref Message m)
