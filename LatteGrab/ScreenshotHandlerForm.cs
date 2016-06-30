@@ -6,22 +6,9 @@ namespace LatteGrab
     {
         public enum Type { FullScreen, Selection };
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var Params = base.CreateParams;
-
-                Params.ExStyle |= 0x80;
-
-                return Params;
-            }
-        }
-
         private Type t;
 
         private GlobalHotkey ghk;
-        private GlobalHotkey escGhk;
 
         public ScreenshotHandlerForm(Type type)
         {
@@ -35,13 +22,11 @@ namespace LatteGrab
                 ghk = new GlobalHotkey(Constants.CTRL + Constants.SHIFT, Keys.D4, this);
             else
                 System.Diagnostics.Debug.WriteLine("Invalid type!");
-
-            escGhk = new GlobalHotkey(Constants.NOMOD, Keys.Escape, this);
             
             if (!ghk.Register())
                 MessageBox.Show("Failed to register an hotkey!");
 
-            this.Visible = false;
+            this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
         }
 
         protected override void WndProc(ref Message m)
