@@ -14,8 +14,8 @@ namespace LatteGrab
 
             int screenLeft = (int)SystemParameters.VirtualScreenLeft;
             int screenTop = (int)SystemParameters.VirtualScreenTop;
-            int screenWidth = (int)SystemParameters.VirtualScreenWidth;
-            int screenHeight = (int)SystemParameters.VirtualScreenHeight;
+            int screenWidth = (int)(SystemParameters.VirtualScreenWidth * Utilities.GetScalingFactor());
+            int screenHeight = (int)(SystemParameters.VirtualScreenHeight * Utilities.GetScalingFactor());
 
             using (Bitmap bmp = new Bitmap(screenWidth, screenHeight))
             {

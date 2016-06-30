@@ -6,6 +6,8 @@ using System.Windows.Media;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Diagnostics;
 
 //  Based on http://www.codeproject.com/Articles/91487/Screen-Capture-in-WPF-WinForms-Application?msg=4737859
 
@@ -17,6 +19,7 @@ namespace LatteGrab
         public double y;
         public double width;
         public double height;
+
         public bool isMouseDown = false;
 
         private static bool isCurrentlyShowing = false;
@@ -26,13 +29,77 @@ namespace LatteGrab
             return isCurrentlyShowing;
         }
 
+        /* Code to Disable WinKey, Alt+Tab, Ctrl+Esc Starts Here */
+
+        // Structure contain information about low-level keyboard input event 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct KBDLLHOOKSTRUCT
+        {
+            public Keys key;
+            public int scanCode;
+            public int flags;
+            public int time;
+            public IntPtr extra;
+        }
+        //System level functions to be used for hook and unhook keyboard input  
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int id, LowLevelKeyboardProc callback, IntPtr hMod, uint dwThreadId);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool UnhookWindowsHookEx(IntPtr hook);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hook, int nCode, IntPtr wp, IntPtr lp);
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string name);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern short GetAsyncKeyState(Keys key);
+        //Declaring Global objects     
+        private IntPtr ptrHook;
+        private LowLevelKeyboardProc objKeyboardProcess;
+
+        private IntPtr captureKey(int nCode, IntPtr wp, IntPtr lp)
+        {
+            if (nCode >= 0 && ScreenshotWindow.IsCurrentlyShowing())
+            {
+                KBDLLHOOKSTRUCT objKeyInfo = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lp, typeof(KBDLLHOOKSTRUCT));
+
+                // Disabling Windows keys 
+
+                if (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin || objKeyInfo.key == Keys.Tab && HasAltModifier(objKeyInfo.flags) || objKeyInfo.key == Keys.Escape && (Keyboard.Modifiers & ModifierKeys.Control) != 0)
+                {
+                    return (IntPtr) 1; // if 0 is returned then All the above keys will be enabled
+                }
+            }
+            return CallNextHookEx(ptrHook, nCode, wp, lp);
+        }
+
+        bool HasAltModifier(int flags)
+        {
+            return (flags & 0x20) == 0x20;
+        }
+
+        /* Code to Disable WinKey, Alt+Tab, Ctrl+Esc Ends Here */
+
         public ScreenshotWindow()
         {
             InitializeComponent();
 
             ScreenshotWindow.isCurrentlyShowing = true;
 
-            this.Cursor = Cursors.Cross;
+            this.Cursor = System.Windows.Input.Cursors.Cross;
+
+            this.Topmost = true;
+
+            this.Activate();
+
+            this.CatchSpecialKeyCombos();
+        }
+
+        private void CatchSpecialKeyCombos()
+        {
+            ProcessModule objCurrentModule = Process.GetCurrentProcess().MainModule;
+            objKeyboardProcess = new LowLevelKeyboardProc(captureKey);
+            ptrHook = SetWindowsHookEx(13, objKeyboardProcess, GetModuleHandle(objCurrentModule.ModuleName), 0);
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -54,7 +121,7 @@ namespace LatteGrab
 
                 ScreenshotWindow.isCurrentlyShowing = false;
 
-                this.Cursor = Cursors.Arrow;
+                this.Cursor = System.Windows.Input.Cursors.Arrow;
 
                 this.Close();
             }
@@ -96,7 +163,7 @@ namespace LatteGrab
 
                     ScreenshotWindow.isCurrentlyShowing = false;
 
-                    this.Cursor = Cursors.Arrow;
+                    this.Cursor = System.Windows.Input.Cursors.Arrow;
 
                     this.Close();
                 }
@@ -107,17 +174,17 @@ namespace LatteGrab
         {
             int ix, iy, iw, ih;
 
-            ix = Convert.ToInt32(x);
-            iy = Convert.ToInt32(y);
-            iw = Convert.ToInt32(width);
-            ih = Convert.ToInt32(height);
+            ix = Convert.ToInt32(x * Utilities.GetScalingFactor());
+            iy = Convert.ToInt32(y * Utilities.GetScalingFactor());
+            iw = Convert.ToInt32(width * Utilities.GetScalingFactor());
+            ih = Convert.ToInt32(height * Utilities.GetScalingFactor());
 
             try
             {
                 Bitmap image = new Bitmap(iw, ih, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
                 Graphics g = Graphics.FromImage(image);
 
-                g.CopyFromScreen(ix - 7, iy - 7, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
+                g.CopyFromScreen(ix - Convert.ToInt32(7 * Utilities.GetScalingFactor()), iy - Convert.ToInt32(7 * Utilities.GetScalingFactor()), 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
 
                 Task.Run(() => Utilities.UploadImage(image));
             }
@@ -126,36 +193,6 @@ namespace LatteGrab
                 isCurrentlyShowing = false;
 
                 this.Close();
-            }
-        }
-
-        public void SaveScreen(double x, double y, double width, double height)
-        {
-            int ix, iy, iw, ih;
-
-            ix = Convert.ToInt32(x);
-            iy = Convert.ToInt32(y);
-            iw = Convert.ToInt32(width);
-            ih = Convert.ToInt32(height);
-
-            try
-            {
-                Bitmap myImage = new Bitmap(iw, ih);
-
-                Graphics gr1 = Graphics.FromImage(myImage);
-
-                IntPtr dc1 = gr1.GetHdc();
-                IntPtr dc2 = NativeMethods.GetWindowDC(NativeMethods.GetForegroundWindow());
-
-                NativeMethods.BitBlt(dc1, ix, iy, iw, ih, dc2, ix, iy, 13369376);
-
-                gr1.ReleaseHdc(dc1);
-
-                Utilities.UploadImage(myImage);
-            }
-            catch
-            {
-                isCurrentlyShowing = false;
             }
         }
 

@@ -6,6 +6,18 @@ namespace LatteGrab
     {
         public enum Type { FullScreen, Selection };
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var Params = base.CreateParams;
+
+                Params.ExStyle |= 0x80;
+
+                return Params;
+            }
+        }
+
         private Type t;
 
         private GlobalHotkey ghk;

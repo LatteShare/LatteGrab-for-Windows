@@ -6,6 +6,10 @@ using Microsoft.Win32;
 
 using LatteGrabCore;
 using System.Threading;
+using System.Runtime.InteropServices;
+using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace LatteGrab
 {
@@ -116,6 +120,34 @@ namespace LatteGrab
             readable = (readable / 1024);
             
             return readable.ToString("0.### ") + suffix;
+        }
+
+        [DllImport("gdi32.dll")]
+        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+        public enum DeviceCap
+        {
+            VERTRES = 10,
+            DESKTOPVERTRES = 117,
+            LOGPIXELSY = 90,
+
+            // http://pinvoke.net/default.aspx/gdi32/GetDeviceCaps.html
+        }
+
+        public static float GetScalingFactor()
+        {
+            Graphics g = Graphics.FromHwnd(IntPtr.Zero);
+            IntPtr desktop = g.GetHdc();
+            int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
+            int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
+            int logpixelsy = GetDeviceCaps(desktop, (int)DeviceCap.LOGPIXELSY);
+            float screenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+            float dpiScalingFactor = (float)logpixelsy / (float)96;
+
+            if (screenScalingFactor > 1)
+                return screenScalingFactor;
+
+            return dpiScalingFactor;
         }
     }
 }
